@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Settings|Pitt Event Manager{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Settings</h2>
+    <form method="POST">
+        <!-- Username -->
+        <div class="mb-3">
+            <label for="username" class="form-label">Username</label>
+            <input type="text" class="form-control" id="username" name="username" value="{{ user.username }}" required>
+        </div>
+
+        <!-- Description -->
+        <div class="mb-3">
+            <label for="desc" class="form-label">Description</label>
+            <input type="text" class="form-control" id="desc" name="desc" value="{{ user.desc }}">
+        </div>
+
+        <!-- Hobbies -->
+        <div class="mb-3">
+            <label for="hobbies" class="form-label">Hobbies</label>
+            <input type="text" class="form-control" id="hobbies" name="hobbies" value="{{ user.hobbies }}">
+        </div>
+
+        <!-- Age -->
+        <div class="mb-3">
+            <label for="age" class="form-label">Age</label>
+            <input type="text" class="form-control" id="age" name="age" value="{{ user.age }}">
+        </div>
+
+        <!-- Password -->
+        <div class="mb-3">
+            <label for="password" class="form-label">New Password</label>
+            <input type="password" class="form-control" id="password" name="password">
+        </div>
+
+        <!-- Confirm Password -->
+        <div class="mb-3">
+            <label for="confirm_password" class="form-label">Confirm New Password</label>
+            <input type="password" class="form-control" id="confirm_password" name="confirm_password">
+        </div>
+
+        <!-- Submit -->
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+    </form>
+</div>
+{% endblock %}
