@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>My Profile</h1>
+<p><strong>Name:</strong> {{ profile.name }}</p>
+<p><strong>Age:</strong> {{ profile.age }}</p>
+<p><strong>Hobbies:</strong> {{ profile.hobbies | join(", ") }}</p>
+<p><strong>Interests:</strong> {{ profile.interests | join(", ") }}</p>
+
+<h2>Accepted Events</h2>
+<ul>
+    {% for event in profile.accepted_events %}
+    <li>{{ event }}</li>
+    {% endfor %}
+</ul>
+{% endblock %}
