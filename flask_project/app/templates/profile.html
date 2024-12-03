@@ -1,15 +1,29 @@
 {% extends "base.html" %}
-{% block content %}
-<h1>My Profile</h1>
-<p><strong>Name:</strong> {{ profile.name }}</p>
-<p><strong>Age:</strong> {{ profile.age }}</p>
-<p><strong>Hobbies:</strong> {{ profile.hobbies | join(", ") }}</p>
-<p><strong>Interests:</strong> {{ profile.interests | join(", ") }}</p>
+{% block title %}My Profile | Pitt Event Manager{% endblock %}
 
-<h2>Accepted Events</h2>
-<ul>
-    {% for event in profile.accepted_events %}
-    <li>{{ event }}</li>
-    {% endfor %}
-</ul>
+{% block content %}
+<div class="container mt-5">
+    <h1 class="mb-4">My Profile</h1>
+    <div class="card p-4">
+        <h5 class="mb-3"><strong>Name:</strong> {{ profile.name }}</h5>
+        <p><strong>Age:</strong> {{ profile.age }}</p>
+        <p><strong>Hobbies:</strong> {{ profile.hobbies | join(", ") }}</p>
+        <p><strong>Interests:</strong> {{ profile.interests | join(", ") }}</p>
+    </div>
+
+    <div class="mt-5">
+        <h2>My Accepted Events</h2>
+        {% if profile.accepted_events %}
+        <ul class="list-group">
+            {% for event in profile.accepted_events %}
+            <li class="list-group-item">
+                <a href="/event/{{ event.id }}">{{ event.title }}</a> - {{ event.time }}
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p class="text-muted">No events accepted yet.</p>
+        {% endif %}
+    </div>
+</div>
 {% endblock %}
