@@ -1,6 +1,32 @@
 {% extends "base.html" %}
-{% block title %}Settings|Pitt Event Manager{% endblock %}
+{% block title %}Homepage | Pitt Event Manager{% endblock %}
 
 {% block content %}
-Homepage
+<div class="container mt-5">
+    <div class="text-center">
+        <h1>Welcome to Pitt Event Manager</h1>
+        <p class="lead">Discover and manage events effortlessly.</p>
+        <a href="/events" class="btn btn-primary btn-lg mt-3">Browse Events</a>
+    </div>
+
+    <div class="mt-5">
+        <h2>Featured Events</h2>
+        <div class="row">
+            {% for event in featured_events %}
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ event.title }}</h5>
+                        <p class="card-text">
+                            <strong>Time:</strong> {{ event.time }}<br>
+                            <strong>Location:</strong> {{ event.location }}
+                        </p>
+                        <a href="/event/{{ event.id }}" class="btn btn-outline-primary">View Details</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
 {% endblock %}
