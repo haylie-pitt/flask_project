@@ -1,9 +1,16 @@
 {% extends "base.html" %}
+{% block title %}{{ event.title }} | Pitt Event Manager{% endblock %}
+
 {% block content %}
-<h1>{{ event.title }}</h1>
-<p><strong>Time:</strong> {{ event.time }}</p>
-<p><strong>Location:</strong> {{ event.location }}</p>
-<p><strong>Type:</strong> {{ event.type }}</p>
-<button>Sign Up</button>
-<button>Will Not Attend</button>
+<div class="container mt-5">
+    <h1 class="mb-4">{{ event.title }}</h1>
+    <p><strong>Time:</strong> {{ event.time }}</p>
+    <p><strong>Location:</strong> {{ event.location }}</p>
+    <p><strong>Type:</strong> {{ event.type }}</p>
+
+    <div class="mt-4">
+        <a href="/signup/{{ event.id }}" class="btn btn-success">Sign Up</a>
+        <a href="/decline/{{ event.id }}" class="btn btn-danger">Will Not Attend</a>
+    </div>
+</div>
 {% endblock %}
