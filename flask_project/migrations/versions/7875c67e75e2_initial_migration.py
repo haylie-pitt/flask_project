@@ -29,8 +29,8 @@ def upgrade():
     )
     op.create_table('event',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('event_name', sa.String(length=100), nullable=False),
-    sa.Column('event_type', sa.String(length=100), nullable=False),
+    sa.Column('event_name', sa.String(length=100), nullable=True),
+    sa.Column('event_type', sa.String(length=100), nullable=True),
     sa.Column('organizer', sa.String(length=100), nullable=True),
     sa.Column('time', sa.String(length=50), nullable=True),
     sa.Column('desc', sa.String(length=255), nullable=True),

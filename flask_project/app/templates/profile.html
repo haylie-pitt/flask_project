@@ -5,19 +5,21 @@
 <div class="container mt-5">
     <h1 class="mb-4">My Profile</h1>
     <div class="card p-4">
-        <h5 class="mb-3"><strong>Name:</strong> {{ profile.name }}</h5>
-        <p><strong>Age:</strong> {{ profile.age }}</p>
-        <p><strong>Hobbies:</strong> {{ profile.hobbies | join(", ") }}</p>
-        <p><strong>Interests:</strong> {{ profile.interests | join(", ") }}</p>
+        <!-- Safeguard against NoneType errors for profile attributes -->
+        <h5 class="mb-3"><strong>Name:</strong> {{ profile.first_name }} {{ profile.last_name }}</h5>
+        <p><strong>Age:</strong> {{ profile.age or 'Not provided' }}</p>
+        <p><strong>Hobbies:</strong> {{ profile.hobbies or 'Not provided' }}</p>
+        <p><strong>Interests:</strong> {{ profile.interests or 'Not provided' }}</p>
     </div>
 
     <div class="mt-5">
         <h2>My Accepted Events</h2>
-        {% if profile.accepted_events %}
+        <!-- Ensure profile.accepted_events exists and is not None -->
+        {% if profile.event_attendance %}
         <ul class="list-group">
-            {% for event in profile.accepted_events %}
+            {% for event in profile.event_attendance %}
             <li class="list-group-item">
-                <a href="/event/{{ event.id }}">{{ event.title }}</a> - {{ event.time }}
+                <a href="{{ url_for('main.event_details', event_id=event.id) }}">{{ event.event_name }}</a> - {{ event.time }}
             </li>
             {% endfor %}
         </ul>
