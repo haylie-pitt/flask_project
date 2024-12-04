@@ -166,5 +166,11 @@ def decline(event_id):
 @main_bp.route('/home')
 @login_required  # This ensures the user must be logged in to access the homepage
 def home():
-    featured_events = Event.query.limit(6).all()  # Show events
-    return render_template('home.html', featured_events=featured_events)
+ if current_user.is_organizer:
+        # Show events the organizer is managing
+        managed_events = Event.query.filter_by(organizer_id=current_user.id).all()
+        return render_template('home.html', managed_events=managed_events)
+    else:
+        # Show featured events for regular users
+        featured_events = Event.query.limit(6).all()
+        return render_template('home.html', featured_events=featured_events)
