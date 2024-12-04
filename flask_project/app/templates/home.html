@@ -1,32 +1,35 @@
 {% extends "base.html" %}
-{% block title %}Homepage | Pitt Event Manager{% endblock %}
+{% block title %}Home | Pitt Event Manager{% endblock %}
 
 {% block content %}
 <div class="container mt-5">
-    <div class="text-center">
-        <h1>Welcome to Pitt Event Manager</h1>
-        <p class="lead">Discover and manage events effortlessly.</p>
-        <a href="/events" class="btn btn-primary btn-lg mt-3">Browse Events</a>
-    </div>
+    <h1 class="mb-4">Welcome to Pitt Event Manager</h1>
 
-    <div class="mt-5">
-        <h2>Featured Events</h2>
-        <div class="row">
-            {% for event in featured_events %}
-            <div class="col-md-4 mb-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ event.title }}</h5>
-                        <p class="card-text">
-                            <strong>Time:</strong> {{ event.time }}<br>
-                            <strong>Location:</strong> {{ event.location }}
-                        </p>
-                        <a href="/event/{{ event.id }}" class="btn btn-outline-primary">View Details</a>
-                    </div>
+    {% if user.is_organizer %}
+    <h2>My Managed Events</h2>
+    <ul class="list-group">
+        {% for event in managed_events %}
+        <li class="list-group-item">
+            {{ event.event_name }} on {{ event.date }}
+            <a href="{{ url_for('main.event_details', event_id=event.id) }}" class="btn btn-primary btn-sm float-end">View</a>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <h2>Featured Events</h2>
+    <div class="row">
+        {% for event in featured_events %}
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ event.event_name }}</h5>
+                    <p class="card-text">{{ event.date }} at {{ event.time }}</p>
+                    <a href="{{ url_for('main.event_details', event_id=event.id) }}" class="btn btn-primary">View</a>
                 </div>
             </div>
-            {% endfor %}
         </div>
+        {% endfor %}
     </div>
+    {% endif %}
 </div>
 {% endblock %}
