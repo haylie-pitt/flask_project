@@ -7,40 +7,36 @@ from . import login_manager  # Import login_manager from the current package (no
 
 main_bp = Blueprint('main', __name__)
 
-# User loader function to get the user by user_id
+# User loader function
 @login_manager.user_loader
 def load_user(user_id):
-    # Ensure this method returns a user object (Account instance) for the given user_id
     return Account.query.get(int(user_id))
 
-# Route for the login page (with sign-up functionality built in)
+# Login/Signup route
 @main_bp.route('/', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
         action = request.form['action']  # 'login' or 'signup'
-        is_organizer = 'is_organizer' in request.form  # Check if the 'is_organizer' checkbox was checked
+        is_organizer = 'is_organizer' in request.form
 
         if action == 'login':
-            # Check if the account exists
             user = Account.query.filter_by(username=username).first()
-            if user and user.check_password(password):  # Check if password is correct
-                login_user(user)  # Log the user in
+            if user and user.check_password(password):
+                login_user(user)
                 flash('Login successful!', 'success')
-                return redirect(url_for('main.home'))  # Redirect to the homepage
+                return redirect(url_for('main.home'))
             else:
                 flash('Invalid username or password. Please try again.', 'danger')
 
         elif action == 'signup':
-            # Check if the username already exists
             existing_user = Account.query.filter_by(username=username).first()
             if existing_user:
                 flash('Username already exists. Please choose a different username.', 'danger')
             else:
-                # Create a new account and hash the password
                 new_account = Account(username=username, is_organizer=is_organizer)
-                new_account.set_password(password)  # Hash the password before saving
+                new_account.set_password(password)
                 db.session.add(new_account)
                 db.session.commit()
                 flash('Account created successfully! You can now log in.', 'success')
@@ -48,11 +44,11 @@ def login():
 
     return render_template('login.html')
 
-# Route for logging out
+# Logout route
 @main_bp.route('/logout')
 @login_required
 def logout():
-    logout_user()  # Log the user out
+    logout_user()
     flash('You have been logged out!', 'success')
     return redirect(url_for('main.login'))  # Redirect to login page
     
@@ -66,9 +62,9 @@ def search():
         return jsonify([event.event_name for event in events])  # Return the list of event names
     return jsonify([])  # Return empty if no search query
 
-# Route for the settings page
+# Settings route
 @main_bp.route('/settings', methods=['GET', 'POST'])
-@login_required  # This ensures the user must be logged in to access settings
+@login_required
 def settings():
     user = current_user  # Get the current logged-in user
 
@@ -101,7 +97,7 @@ def settings():
         # Handle password update if provided
         if password:
             if password == confirm_password:
-                user.set_password(password)  # Hash and update the password
+                user.set_password(password)
             else:
                 flash("Passwords do not match. Please try again.", 'danger')
                 return redirect(url_for('main.settings'))  # Stay on settings page if passwords don't match
@@ -124,12 +120,9 @@ def profile():
         flash("You need to be logged in to view your profile.", 'danger')
         return redirect(url_for('main.login'))  # Redirect to login page if no user is found
 
-    # Debugging print statements (optional, remove in production)
-    print(user)  # Add a print statement to check the current_user object
-
     return render_template('profile.html', profile=user)
 
-# Route for event details page (updated to events_details.html)
+# Route for event details page
 @main_bp.route('/event/<int:event_id>')
 @login_required
 def event_details(event_id):
@@ -149,7 +142,7 @@ def signup(event_id):
         flash("You are already signed up for this event.", 'info')
     return redirect(url_for('main.event_details', event_id=event.id))
 
-# Route for declining an event (RSVP decline)
+# Decline event route
 @main_bp.route('/decline/<int:event_id>')
 @login_required
 def decline(event_id):
@@ -162,9 +155,55 @@ def decline(event_id):
         flash("You haven't signed up for this event.", 'info')
     return redirect(url_for('main.event_details', event_id=event.id))
 
-# Sample homepage route after login
 @main_bp.route('/home')
-@login_required  # This ensures the user must be logged in to access the homepage
+@login_required
 def home():
-    featured_events = Event.query.limit(6).all()  # Show events
-    return render_template('home.html', featured_events=featured_events)
+    user = current_user  # Get the currently logged-in user
+    featured_events = Event.query.limit(6).all()  # Get a limited number of featured events to display on the homepage
+
+    if user.is_organizer:  # Check if the user is an event organizer
+        # If the user is an organizer, show the events they manage
+        managed_events = Event.query.filter_by(organizer=user.username).all()
+        return render_template(
+            'home.html', 
+            user=user,  # Pass 'user' explicitly to the template
+            managed_events=managed_events, 
+            featured_events=featured_events
+        )
+    else:
+        # If the user is not an organizer, show the events they are attending
+        attended_events = user.event_attendance  # Access the events the user has signed up for
+        return render_template(
+            'home.html', 
+            user=user,  # Pass 'user' explicitly to the template
+            attended_events=attended_events, 
+            featured_events=featured_events
+        )
+
+# Create event route
+@main_bp.route('/create_event', methods=['POST'])
+@login_required
+def create_event():
+    if request.method == 'POST':
+        event_name = request.form['event_name']
+        event_type = request.form['event_type']
+        time = request.form['time']
+        desc = request.form['desc']
+        location = request.form['location']
+        date = request.form['date']
+
+        # Associate the event with the current user's ID directly
+        new_event = Event(
+            event_name=event_name,
+            event_type=event_type,
+            time=time,
+            desc=desc,
+            location=location,
+            date=date,
+            user_id=current_user.id  # Use user_id instead of organizer_id
+        )
+
+        db.session.add(new_event)
+        db.session.commit()
+        flash(f'Event "{event_name}" created successfully!', 'success')
+        return redirect(url_for('main.home'))
