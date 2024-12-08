@@ -31,8 +31,9 @@ class Event(db.Model):
     desc = db.Column(db.String(255))
     location = db.Column(db.String(255))
     date = db.Column(db.String(20))
+    tags = db.Column(db.String(255), nullable=True)  # New field for tags
     user_id_attendance = db.relationship('Account', secondary='event_attendance')
-
+    
 class EventAttendance(db.Model):
     __tablename__ = 'event_attendance'
     account_id = db.Column(db.Integer, db.ForeignKey('account.id'), primary_key=True)
