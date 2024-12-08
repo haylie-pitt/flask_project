@@ -9,31 +9,35 @@
                 <div class="card-body">
                     <h2 class="text-center mb-4">Login to Your Account</h2>
 
-                    <!-- Display flash messages -->
+                    <!-- Flash Messages for Success or Error -->
                     {% with messages = get_flashed_messages(with_categories=true) %}
                         {% if messages %}
-                            <div class="alert alert-{{ messages[0][0] }}">
+                            <div class="alert alert-{{ messages[0][0] }} alert-dismissible fade show" role="alert">
                                 {{ messages[0][1] }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                             </div>
                         {% endif %}
                     {% endwith %}
 
-                    <form method="POST">
-                        <div class="form-group my-1">
-                            <label for="username">Username</label>
+                    <!-- Login & Signup Form -->
+                    <form method="POST" novalidate>
+                        <div class="form-group my-3">
+                            <label for="username" class="form-label">Username</label>
                             <input type="text" class="form-control" id="username" name="username" placeholder="Enter username" required>
                         </div>
-                        <div class="form-group my-1">
-                            <label for="password">Password</label>
+
+                        <div class="form-group my-3">
+                            <label for="password" class="form-label">Password</label>
                             <input type="password" class="form-control" id="password" name="password" placeholder="Enter password" required>
                         </div>
 
-                        <!-- Checkbox to mark if the user is an event organizer -->
-                        <div class="form-group my-1">
-                            <input type="checkbox" id="is_organizer" name="is_organizer">
-                            <label for="is_organizer">I am an Event Organizer</label>
+                        <!-- Checkbox for Event Organizer Role -->
+                        <div class="form-check my-3">
+                            <input type="checkbox" class="form-check-input" id="is_organizer" name="is_organizer">
+                            <label class="form-check-label" for="is_organizer">I am an Event Organizer</label>
                         </div>
 
+                        <!-- Submit Buttons for Login & Signup -->
                         <div class="form-group d-flex justify-content-center mt-4">
                             <button type="submit" class="btn btn-primary" name="action" value="login">Sign In</button>
                             <button type="submit" class="btn btn-success mx-4" name="action" value="signup">Sign Up</button>
