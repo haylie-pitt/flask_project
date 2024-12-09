@@ -1,0 +1,16 @@
+{
+    "1": {
+        "event_name": "Test Event",
+        "event_type": "Workshop",
+        "organizer": "testuser",
+        "time": "10:00 AM",
+        "desc": "Test Description",
+        "location": "Room 101",
+        "date": "2024-12-15",
+        "tags": [
+            "test",
+            "workshop"
+        ],
+        "user_id_attendance": []
+    }
+}

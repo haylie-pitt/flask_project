@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}{{ event["event_name"] }} | Pitt Event Manager{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="mb-4">{{ event["event_name"] }}</h1>
+    <p><strong>Date:</strong> {{ event["date"] }}</p>
+    <p><strong>Time:</strong> {{ event["time"] }}</p>
+    <p><strong>Location:</strong> {{ event["location"] }}</p>
+    <p><strong>Description:</strong> {{ event["desc"] }}</p>
+
+    {% if user.is_organizer %}
+    <h3>Attendees</h3>
+    <ul>
+        {% for attendee in event["user_id_attendance"] %}
+        <li>{{ attendee.first_name }} {{ attendee.last_name }}</li>
+        {% endfor %}
+    </ul>
+    <a href="{{ url_for('main.edit_event', event_id=event_key) }}" class="btn btn-warning">Edit Event</a>
+    <a href="{{ url_for('main.cancel_event', event_id=event_key) }}" class="btn btn-danger">Cancel Event</a>
+    {% else %}
+    <a href="{{ url_for('main.signup', event_id=event_key) }}" class="btn btn-success">Sign Up</a>
+    <a href="{{ url_for('main.decline', event_id=event_key) }}" class="btn btn-danger">Decline</a>
+    {% endif %}
+</div>
+{% endblock %}

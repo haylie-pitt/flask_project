@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}My Profile | Pitt Event Manager{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="mb-4">My Profile</h1>
+
+    <!-- Profile Details Section -->
+    <div class="card p-4">
+        <h5 class="mb-3"><strong>Name:</strong> {{ profile["first_name"] }} {{ profile["last_name"] }}</h5>
+        <p><strong>Age:</strong> {{ profile["age"] or "Not provided" }}</p>
+        <p><strong>Hobbies:</strong> {{ profile["hobbies"] or "Not provided" }}</p>
+        <p><strong>Interests:</strong> {{ profile["desc"] or "Not provided" }}</p>
+    </div>
+
+    <!-- User's Accepted Events Section -->
+    <div class="mt-5">
+        <h2>My Accepted Events</h2>
+        {% if profile.event_attendance %}
+        <ul class="list-group">
+            {% for event_key in profile["event_attendance"] %}
+            {% set event = events[event_key] %}
+            <li class="list-group-item">
+                <a href="{{ url_for('main.event_details', event_id=event_key) }}">{{ event["event_name"] }}</a> - {{ event["time"] }}
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p class="text-muted">No events accepted yet.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

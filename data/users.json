@@ -1,0 +1,13 @@
+{
+    "testuser": {
+        "username": "testuser",
+        "password": "scrypt:32768:8:1$HILuwuvmHIYztfZH$ae6fcfa6349c97cfa9dcf2d939b46aa7183fa2ede189942a5113ef2033d986ccbd31dce2d62869dd96d38da106a010f47db3ff8ef09367021267e965fbdade11",
+        "first_name": "Test",
+        "last_name": "User",
+        "desc": "",
+        "hobbies": "",
+        "age": "",
+        "is_organizer": false,
+        "event_attendance": []
+    }
+}

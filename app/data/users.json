@@ -1,0 +1,24 @@
+{
+    "JDAWG": {
+        "username": "JDAWG",
+        "password": "scrypt:32768:8:1$t3qL2tkn7n8pFZg5$de6717359c10988a016537a42a59d8ab8c3725b4840617c82f509bc00f9e5ffc29b521268211e9eb49524453841e7820e58618e90f8660caea0b42ed527e2726",
+        "first_name": "",
+        "last_name": "",
+        "desc": "",
+        "hobbies": "",
+        "age": "",
+        "is_organizer": true,
+        "event_attendance": []
+    },
+    "jjsitler": {
+        "username": "jjsitler",
+        "password": "scrypt:32768:8:1$I5qgwYK9Ygq8VEYf$8fdaad7f1bef0bff2f755f30a4c3952cdf434acd52d7c353efe47c74dcd777f8b2482dcbc7745d7dda45fe71c4121565ff5014dee5cd32e02429fd216d03be59",
+        "first_name": "",
+        "last_name": "",
+        "desc": "",
+        "hobbies": "",
+        "age": "",
+        "is_organizer": false,
+        "event_attendance": []
+    }
+}
